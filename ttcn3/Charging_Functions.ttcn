@@ -1,0 +1,449 @@
+/**
+ * @author  FSCOM 
+ * @desc    This module provides functions used by Charging TCs
+ * @see     [17575-1:2016]: Test suite structure and test purpose
+ * @version $id$
+ */
+module Charging_Functions {
+    
+    // EFC
+    /**
+     * @desc    [17575-1:2016]: Charging
+     * @see     Annex A (normative) EFC data type specifications
+     */
+    import from EfcAutonomousCharging language "ASN.1:1997" all;
+    /**
+     * @desc    [17575-1:2016]: Context data
+     * @see     A.2 Data specifications
+     */
+    import from EfcAutonomousContextData language "ASN.1:1997" all;
+	import from EfcDsrcApplication language "ASN.1:1997" all;
+	
+	// LibEfc_Common
+    /**
+     * @desc    TTCN-3 does not support ASN.1 parameterization (ETSI ES 201 873-7 V4.5.1 Clause 10)
+     *          Common_Parameterised_Asn1_Data TTCN-3 module is a workaround
+     */
+    import from Common_Parameterised_Asn1_Data all;
+    import from Common_Interfaces all;
+    import from Common_Functions all;
+    import from Common_Defaults all;
+    import from Common_LibUpperTester all;
+    import from Charging_Pixits all;
+    import from Common_Templates all;
+
+    // Charging
+    import from Charging_TypesAndValues all;
+    
+    /**
+     * @desc    Preambule functions:
+     * - Initialize communication stack
+     * - Map TTCN-3 ports
+     * - Activate needed defaults
+     * - Send the initial ContextData
+     */
+    group Charging_Preamble {
+        /**
+         * @desc    Prepare the Preambule
+         * @verdict unchanged
+         */
+        function f_Charging_Preambule() runs on EutComp {
+            // Initialize communication stack
+            f_InitializeCommunication();
+            
+            // Map TTCN-3 ports to TestAdapter ports
+            map(self:pco, system:ta_pco);
+            map(self:eaPort, system:ta_eaPort);
+            
+            // Activate message filtering and timeouts
+            // See  
+            activate(a_defaults());
+            // Activate UpperTester
+            activate(a_upperTester());
+
+        } // End of function f_Charging_Preambule()
+    
+        /**
+         * @desc        Send a Context Data to the EUT, do not wait for response
+         * @verdict     unchanged
+         */
+        function f_SendContextData(
+                                   in template Iso17575_3AduBody p_ContextData
+        ) runs on EutComp {
+            f_pco_send_iso17575_3Adu(m_iso17575_3Adu(m_aduHeader_default, p_ContextData));
+//TODO To be removed            pco.send (m_iso17575_3Adu(m_aduHeader_default, p_ContextData));
+        } // End of function f_SendContextData
+        
+    } // End of group Charging_Preamble
+
+    /**
+     * @desc    Postambule functions
+     * - Deactivate all activated defaults
+     * - Unmap TTCN-3 ports
+     * - De-Initialize communication stack
+     */
+    group Charging_Postamble {
+        /**
+         * @desc    Execute the postambule
+         * @verdict unchanged
+         */
+        function f_Charging_Postambule() runs on EutComp {
+            // Deactivate all message filtering
+            deactivate;
+            
+            // Unmap TTCN-3 ports to TestAdapter ports
+            unmap(self:pco, system:ta_pco);
+            unmap(self:eaPort, system:ta_eaPort);
+            
+            // De-nitialize communication stack
+            f_DeInitializeCommunication();
+        } // End of function f_Charging_Preambule()
+    } // End of group Charging_Postamble
+
+    /**
+     * @desc    Validation functions group
+     * @remark  It's not possible to use complement/superset because of we check presence/absence of field into cascading lists
+     */
+    group Validation {
+        /**
+         * @desc    This function checks that Vehicle License Plate Number is present in lower level data elements (DetectedChargeObject or AggregatedSingleTariffClassSession)
+         * @param   p_usageStatementList Usage Statment list
+         * @return  true on success, false otherwise
+         * @verdict unchanged
+         */
+        function f_check_vehicleLPNr(
+                                     in ChargeReport.usageStatementList p_usageStatementList
+        ) runs on EutComp return boolean {
+            // p_usageStatementList shall not be omit
+
+            // Parse UsageStatement list
+            for (var integer idx := 0; idx < sizeof(p_usageStatementList); idx := idx + 1) {
+                // Check if listOfChargeObjects is present
+                if (ischosen(p_usageStatementList[idx].usageStatement) == false) {
+                    continue;
+                }
+                if (ispresent(p_usageStatementList[idx].usageStatement.listOfChargeObjects) == false) {
+                    // Check in aggregatedSingleTariffClassSession
+                    if (ispresent(p_usageStatementList[idx].usageStatement.aggregatedSingleTariffClassSession) == false) {
+                        // Skip this item
+                        continue;
+                    } else {
+                        // Process this item
+                        if (f_check_vehicleLPNr_Into_aggregatedSingleTariffClassSession(p_usageStatementList[idx].usageStatement.aggregatedSingleTariffClassSession) == true) {
+                            // vehicleLPNr was found in aggregatedSingleTariffClassSession
+                            return true;
+                        } // else continue
+                    }
+                } else {
+                    // Process this item
+                    if (f_check_vehicleLPNr_Into_DetectedChargeObject_List<octetstring>(p_usageStatementList[idx].usageStatement.listOfChargeObjects) == true) {
+                        // vehicleLPNr was found in listOfChargeObjects
+                        return true;
+                    } // else continue
+                }
+            } // 'for' loop
+
+            return false; // Error
+        } // End of function f_check_vehicleLPNr
+        /**
+         * @desc    This function checks that Vehicle License Plate Number is present in the DetectedChargeObject list
+         * @param   p_chargeObjectsList DetectedChargeObject list
+         * @return  true on success, false otherwise
+         * @verdict unchanged
+         */
+        function f_check_vehicleLPNr_Into_DetectedChargeObject_List <in type Container>(
+                                                                                        in UsageStatement<Container>.listOfChargeObjects p_chargeObjectsList
+        ) runs on EutComp return boolean {
+            // p_chargeObjectsList shall not be omit
+
+            // Parse UsageStatement list
+            for (var integer idx := 0; idx < sizeof(p_chargeObjectsList); idx := idx + 1) {
+                if (ispresent(p_chargeObjectsList[idx].vehicleDescription) == false) {
+                    // Skip this item
+                    continue;
+                }
+                // Process item
+                if (ispresent(p_chargeObjectsList[idx].vehicleDescription.vehicleLPNr) == false) {
+                    // Skip this item
+                    continue;
+                }
+                // vehicleLPNr was found
+                return true; // Success
+            } // 'for' loop
+            
+            return false; // Error
+        } // End of function f_check_vehicleLPNr_Into_DetectedChargeObject_List
+        /**
+         * @desc    This function checks that Vehicle License Plate Number is present in the AggregatedSingleTariffClassSession instance
+         * @param   p_value AggregatedSingleTariffClassSession instance
+         * @return  true on success, false otherwise
+         * @verdict unchanged
+         */
+        function f_check_vehicleLPNr_Into_aggregatedSingleTariffClassSession(in AggregatedSingleTariffClassSession p_value) runs on EutComp
+        return boolean {
+            // p_value shall not be omit
+
+            if ((ispresent(p_value.vehicleDescription) == true) and (ispresent(p_value.vehicleDescription.vehicleDescription) == true)) {
+                    // vehicleLPNr was found
+                    return true; // Success
+            }
+
+            return false; // Error
+        } // End of function f_check_vehicleLPNr_Into_aggregatedSingleTariffClassSession
+        /**
+         * @desc    This function verifies the uniqueness of Usage Statement ID
+         * @param   p_usageStatementList Usage Statment list
+         * @return  true on success, false otherwise
+         * @verdict unchanged
+         */
+        function f_check_uniqueness_UsageStatementID(
+                                                     in ChargeReport.usageStatementList p_usageStatementList
+        ) runs on EutComp return boolean {
+            // p_usageStatementList shall not be omit
+
+            var charstring v_usageStatementIdFound := ";"; // Used to build the list of the usageStatementId already processed
+            var charstring v_usageStatememtId; // usageStatementId currently processed
+            var template charstring v_found_pattern; // Used in regex to verify that ''v_usageStatememtId' was not found before'
+
+            // Parse UsageStatement list
+            for (var integer idx := 0; idx < sizeof(p_usageStatementList); idx := idx + 1) {
+            	if (ischosen(p_usageStatementList[idx].usageStatement) == false) {
+            		continue;
+            	}
+                if (ispresent(p_usageStatementList[idx].usageStatement.usageStatementId) == false) {
+                    return false; // Error
+                }
+                v_usageStatememtId := int2str(p_usageStatementList[idx].usageStatement.usageStatementId);
+                v_found_pattern := pattern "*({v_usageStatememtId})*";
+                if (regexp(v_usageStatementIdFound, v_found_pattern, 0) == v_usageStatememtId) {
+                    return false; // v_usageStatememtId exist at least 2 times, uniqueness is not verified
+                }
+                // v_usageStatememtId non found, add current usageStatementId into the built list
+                v_usageStatementIdFound := v_usageStatementIdFound & v_usageStatememtId & ";";
+            } // 'for' loop
+            
+            return true;
+        } // End of function f_check_uniqueness_UsageStatementID
+        /**
+         * @desc    Verify the precedence of aggregatedFee report periods
+         * @param   p_usageStatementList Usage Statment list
+         * @return  true on success, false otherwise
+         * @verdict unchanged
+         */
+        function f_check_aggregatedFee_reportPeriod(in ChargeReport.usageStatementList p_usageStatementList) runs on EutComp
+        return boolean {
+            // p_usageStatementList shall not be omit
+
+            // Parse UsageStatement list
+            for (var integer idx := 0; idx < sizeof(p_usageStatementList); idx := idx + 1) {
+                if (ispresent(p_usageStatementList[idx].usageStatement.aggregatedFee) == false) {
+                    // Skip this item
+                    continue;
+                }
+                if (p_usageStatementList[idx].usageStatement.aggregatedFee.timePeriodCovered.beginOfPeriod >= p_usageStatementList[idx].usageStatement.aggregatedFee.timePeriodCovered.endOfPeriod) {
+                    return false;
+                }
+            } // 'for' loop
+
+            return true;
+        } // End of function f_check_aggregatedFee_reportPeriod
+        /**
+         * @desc    Verify the precedence of aggregatedFee report periods
+         * @param   p_usageStatementList Usage Statment list
+         * @return  true on success, false otherwise
+         * @verdict unchanged
+         */
+        function f_check_AggregatedSingleClassTariffSession_timePeriodCovered(in ChargeReport.usageStatementList p_usageStatementList) runs on EutComp
+        return boolean {
+            // p_usageStatementList shall not be omit
+
+            // Parse UsageStatement list
+            for (var integer idx := 0; idx < sizeof(p_usageStatementList); idx := idx + 1) {
+                if (ispresent(p_usageStatementList[idx].usageStatement.aggregatedSingleTariffClassSession) == false) {
+                    // Skip this item
+                    continue;
+                } else if (ispresent(p_usageStatementList[idx].usageStatement.aggregatedSingleTariffClassSession.timePeriodCovered) == false) {
+                    // Skip this item
+                    continue;
+                } else {
+                    if (p_usageStatementList[idx].usageStatement.aggregatedSingleTariffClassSession.timePeriodCovered.beginOfPeriod >= p_usageStatementList[idx].usageStatement.aggregatedSingleTariffClassSession.timePeriodCovered.endOfPeriod) {
+                        return false;
+                    }
+                }
+            } // 'for' loop
+
+            return true;
+        } // End of function f_check_AggregatedSingleClassTariffSession_timePeriodCovered
+        /**
+         * @desc    Validate AccountStatus transitions according to the TPs: TC_BEF_FE_BV_26..31
+         * @param   accountS1 AccountStatus of the first ChargeReport message
+         * @param   accountS2 AccountStatus of the second ChargeReport message
+         * @return  true if the transitions are verified, false otherwise
+         * @verdict unchanged
+         */
+        function f_validate_AddToAccount_Transitions(AccountStatus accountS1, AccountStatus accountS2) runs on EutComp
+        return boolean {
+
+            if ((accountS1 == SetMMIRq_nok_) and (accountS2 == SetMMIRq_ok_)) {
+                log ("3 -> [3|2|1] transition not verified");
+                return false;
+            } else if ((accountS1 == SetMMIRq.empty)  and (accountS2 != SetMMIRq.low)) {
+                log ("2 -> 1 transition not verified");
+                return false;
+            } else if (accountS1 == SetMMIRq.low) {
+                if ((accountS1 == SetMMIRq.empty) or (accountS1 == SetMMIRq_nok_)) {
+                    log ("1 -> [0|1] transition not verified");
+                    return false;
+                }
+            } else if ((accountS1 == SetMMIRq_ok_) and (accountS2 != SetMMIRq_ok_)) {
+                log ("0 -> 0 transition not verified");
+                return false;
+            }
+            
+            return true;
+        } // End of function f_validate_AddToAccount_Transitions
+    } // End of group Validation
+
+    /**
+     * @desc    UpperTester group
+     */
+    group DUT_Actions {
+        /**
+         * @desc    Defines UpperTester commands
+         */
+        group Arguments {
+            /**
+             * @desc    Check ChargeReportResponse according to the table 7
+             * @see     [17575-1:2016]: Test suite structure and test purpose
+             * @see     Clause C.1.2 General Structure of Charge Report Response
+             */
+            const ParameterList checkChargeReportResponse := {
+                "ChargeReportResponse", "C.1.2-Table7",    // { Params=value }
+                "", ""
+            };
+            /**
+             * @desc    Set the field transactionCounter to its maximal value (shall be 4294967295)
+             */
+            const ParameterList transactionCounter := {
+                "ChargeReport.transactionCounter", "4294967295",    // { Params=value }
+                "", ""
+            };
+            /**
+             * @desc    Increase the field mileage.Dist
+             */
+            const ParameterList incMileageDist := {
+                "ChargeReport.mileage.dist", "+50.6",
+                "ChargeReport.mileage.distUnit", "default",
+                "", ""
+            };
+            /**
+             * @desc    Set the field mileage.dist to the value 16777215
+             */
+            const ParameterList mileageRollOver := {
+                "ChargeReport.mileage.dist", "16777215",
+                "", ""
+            };
+            /**
+             * @desc    Set ServiceProviderContract field to contract1
+             */
+            const ParameterList contract1 := {
+                "ChargeReport.serviceProviderContract", "contract1",
+                "", ""
+            };
+            /**
+             * @desc    Specify the couple (field, value) to verify
+             */
+            const ParameterList obeStatusForDriver_ok := {
+                "ChargeReportResponse.obeStatusForDriver", "ok",
+                "", ""
+            };
+            /**
+             * @desc    Specify the couple (field, value) to verify
+             */
+            const ParameterList obeStatusForDriver_nok := {
+                "ChargeReportResponse.obeStatusForDriver", "nok",
+                "", ""
+            };
+            /**
+             * @desc    Specify the couple (field, value) to verify
+             */
+            const ParameterList obeStatusForDriver_contactOperator := {
+                "ChargeReportResponse.obeStatusForDriver", "contactOperator",
+                "", ""
+            };
+            /**
+             * @desc    Specify the couple (field, value) to verify
+             */
+            const ParameterList obeStatusForDriver_nokInLocalContext := {
+                "ChargeReportResponse.obeStatusForDriver", "nokInLocalContext",
+                "", ""
+            };
+            /**
+             * @desc    Specify the couple (field, value) to verify
+             */
+            const ParameterList obeStatusForDriver_noSignalling := {
+                "ChargeReportResponse.obeStatusForDriver", "noSignalling",
+                "", ""
+            };
+            /**
+             * @desc    Set Account based
+             */
+            const ParameterList paymentFee_THR_UNIT := {
+                "PaymentFee.paymentFeeAmount", int2str(PX_ACCOUNT_BASED_THR),
+                "PaymentFee.paymentFeeUnit", oct2str(PX_ACCOUNT_BASED_UNIT),
+                "", ""
+            };
+            /**
+             * @desc    Set reload Account threshold
+             */
+            const ParameterList reloadOldAccount_THR := {
+                "reloadOldAccount", int2str(float2int(int2float(PX_ACCOUNT_BASED_THR) / 4.0)),
+                "", ""
+            };
+            /**
+             * @desc    Set Distance based
+             */
+            const ParameterList distance_THR_UNIT := {
+                "Distance.dist", int2str(PX_DISTANCE_BASED_THR),
+                "Distance.distUnit", int2str(PX_DISTANCE_BASED_UNIT),
+                "", ""
+            };
+            /**
+             * @desc    Set reload distance limit threshold
+             */
+            const ParameterList reloadOldDistance_THR := {
+                "reloadOldDistanceLimit", int2str(float2int(int2float(PX_DISTANCE_BASED_THR) / 4.0)),
+                "", ""
+            };
+            /**
+             * @desc    Set Time based
+             */
+            const ParameterList time_THR := {
+                "DateTime.timeCompact.seconds", int2str(PX_TIME_BASED_THR),
+                "", ""
+            };
+             /**
+             * @desc    Set Distance based
+             */
+            const ParameterList duration_THR_UNIT := {
+                "Duration.dur", int2str(float2int(PX_DURATION_BASED_THR)),
+                "Duration.durUnit", int2str(PX_DURATION_BASED_UNIT),
+                "", ""
+            };
+             /**
+             * @desc    Set Event based
+             */
+            const ParameterList event_THR := {
+                "event", int2str(PX_EVENT_BASED_THR),
+                "", ""
+            };
+            /**
+             * @desc    Set reload event limit threshold
+             */
+            const ParameterList reloadOldEvent_THR := {
+                "reloadOldEventLimit", int2str(float2int(int2float(PX_EVENT_BASED_THR) / 4.0)),
+                "", ""
+            };
+       } // End of group Arguments
+    } // End of group DUT_Actions
+}

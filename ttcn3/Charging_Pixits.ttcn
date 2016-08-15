@@ -1,0 +1,73 @@
+/**
+ * @author	FSCOM 
+ * @desc 	This module describes the common parameters for TCs execution
+ * @version	$id$
+ */
+module Charging_Pixits {
+    
+    // EFC
+    /**
+     * @desc    [17575-1:2016]: Charging
+     * @see     Annex A (normative) EFC data type specifications
+     */
+    import from EfcAutonomousCharging language "ASN.1:1997" all;
+    /**
+     * @desc    [17575-1:2016]: Context data
+     * @see     A.2 Data specifications
+     */
+    import from EfcAutonomousContextData language "ASN.1:1997" all; 
+    /**
+     * @desc    Road transport and traffic telematics — Electronic fee collection — Application interface definition for electronic fee collection (EFC) based on Global Navigation Satellite Systems and Cellular Network (GNSS/CN)
+     * @see     Annex A (normative) EFC data type specifications
+     */
+    import from AVIAEINumberingAndDataStructures language "ASN.1:1997" all;
+    
+     // LibEfc_Common
+    /**
+     * @desc    TTCN-3 does not support ASN.1 parameterization (ETSI ES 201 873-7 V4.5.1 Clause 10)
+     *          Common_Parameterised_Asn1_Data TTCN-3 module is a workaround
+     */
+    import from Common_Parameterised_Asn1_Data all;
+    
+    /**
+     * @desc    Transaction counter value set for response
+     */
+    modulepar integer PX_TRANSACTION_COUNTER_RESPONSE := 2;
+    /**
+     * @desc    Number of test body sequence to execute
+     */
+    modulepar float PX_TEST_BODY_DURATION := 30.0;
+    /**
+     * @desc    Threshold for on-board account is set to THR
+     * @see     m_chargeReportResponse_transactionCounter template
+     */
+    modulepar Int2 PX_ACCOUNT_BASED_THR := 15;
+    /**
+     * @desc    On-board account is credit based with unit defined as UNIT
+     */
+    modulepar octetstring PX_ACCOUNT_BASED_UNIT := '03D2'O; // See ISO 4217: 0 is for 1:1 ratio, Euro code is 978=3D2h, (if i'm right!!')
+    /**
+     * @desc    Threshold for on-board distance is set to THR
+     */
+    modulepar integer PX_DISTANCE_BASED_THR := 50;
+    /**
+     * @desc    On-board distance unit defined as UNIT
+     */
+    modulepar DisUnit PX_DISTANCE_BASED_UNIT := DisUnit_kilometres_;
+    /**
+     * @desc    Threshold for on-board time is set to THR
+     */
+    modulepar integer PX_TIME_BASED_THR := 900; // 15 'minutes' in seconds
+    /**
+     * @desc    Threshold for on-board duration is set to THR
+     */
+    modulepar float PX_DURATION_BASED_THR := 900.0;
+    /**
+     * @desc    On-board duration unit defined as UNIT
+     */
+    modulepar DurUnit PX_DURATION_BASED_UNIT := DurUnit_seconds_;
+    /**
+     * @desc    Threshold for on-board event is set to THR
+     */
+    modulepar integer PX_EVENT_BASED_THR := 128;
+} // End of module Charging_Pixits

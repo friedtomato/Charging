@@ -1,0 +1,748 @@
+/**
+ * @author  FSCOM 
+ * @desc    This module provides templates for Charging
+ * @see     Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3
+ * @remark  See Annex C - Data structures
+ * @version $id$
+ */
+module Charging_Templates {
+    // EFC
+    /**
+     * @desc    [17575-1:2016]: Charging
+     * @see     Annex A (normative) EFC data type specifications
+     */
+    import from EfcAutonomousCharging language "ASN.1:1997" all;
+    /**
+     * @desc    [17575-1:2016]: Context data
+     * @see     A.2 Data specifications
+     */
+    import from EfcAutonomousContextData language "ASN.1:1997" all;
+    import from EfcDsrcApplication language "ASN.1:1997" all;
+    
+    // LibEfc_Common
+    /**
+     * @desc    TTCN-3 does not support ASN.1 parameterization (ETSI ES 201 873-7 V4.5.1 Clause 10)
+     *          Common_Parameterised_Asn1_Data TTCN-3 module is a workaround
+     */
+    import from Common_Parameterised_Asn1_Data all;
+    import from Common_Templates all;
+    import from Common_Pixits all;
+    
+    // Charging
+    import from Charging_Pixits all;
+    import from Charging_PICS all;
+    
+    /**
+     * @desc    Common templates
+     */
+    import from Common_Templates all;
+
+    group Charging_Contents {
+        /**
+         * @desc    ChargeReportContent template with chargeReportCounter requested in ChargeReport messages
+         * @see     [17575-3:2016], Clause 8.3.5.2.1 Data type ChargeReportContent
+         * @remark  All other ChargeReportContent template shall modify this one. use PICS to initialize properly this 
+         */
+        template (value) ChargeReportContent m_chargeReportContent_chargeReportCounter_requested
+        modifies m_chargeReportContent_default := {
+            obeId := PIC_obeId,
+            tollContext := PIC_tollContext,
+            chargeReportCounter := PIC_chargeReportCounter
+        } // End of template m_chargeReportContent_chargeReportCounter_requested
+        /**
+         * @desc    ChargeReportContent template with mileage requested in ChargeReport messages
+         * @see     [17575-3:2016], Clause 8.3.5.2.1 Data type ChargeReportContent
+         * @remark  All other ChargeReportContent template shall modify this one. use PICS to initialize properly this 
+         */
+        template (value) ChargeReportContent m_chargeReportContent_mileage_requested
+        modifies m_chargeReportContent_default := {
+            obeId := PIC_obeId,
+            tollContext := PIC_tollContext,
+            mileage := PIC_mileage
+        } // End of template m_chargeReportContent_mileage_requested
+        /**
+         * @desc    ChargeReportContent template with accountStatus, chargeReportCounter and mileage requested in ChargeReport messages
+         * @see     [17575-3:2016], Clause 8.3.5.2.1 Data type ChargeReportContent
+         * @remark  All other ChargeReportContent template shall modify this one. use PICS to initialize properly this 
+         */
+        template (value) ChargeReportContent m_chargeReportContent_accountStatus_chargeReportCounter_mileage_requested
+        modifies m_chargeReportContent_default := {
+            obeId := PIC_obeId,
+            tollContext := PIC_tollContext,
+            accountStatus := PIC_accountStatus,
+            chargeReportCounter := PIC_chargeReportCounter,
+            mileage := PIC_mileage
+        } // End of template m_chargeReportContent_accountStatus_chargeReportCounter_mileage_requested
+
+        /**
+         * @desc    UsageStatementContent with listOfChargeObjects requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         * @remark  Use PICS to initialize properly this template. These values are assigned according to [16410-1:2016], Table C.4: ContextData1
+         */
+        template (value) UsageStatementContent m_usageStatementContent_DetectedChargeObject_requested
+        modifies m_usageStatementContent_default := {
+            listOfChargeObjects := true
+        } // End of template m_usageStatementContent_DetectedChargeObject_requested
+        /**
+         * @desc    UsageStatementContent with aggregatedFee requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         * @remark  Use PICS to initialize properly this template. These values are assigned according to [16410-1:2016], Table C.4: ContextData1
+         */
+        template (value) UsageStatementContent m_usageStatementContent_AggregatedFee
+        modifies m_usageStatementContent_default := {
+            aggregatedFee := PIC_aggregatedFee
+        } // End of template m_usageStatementContent_AggregatedFee
+        /**
+         * @desc    UsageStatementContent with aggregatedSingleClassTariffSession requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         * @remark  Use PICS to initialize properly this template. These values are assigned according to [16410-1:2016], Table C.4: ContextData1
+         */
+        template (value) UsageStatementContent m_usageStatementContent_AggregatedSingleClassTariffSession
+        modifies m_usageStatementContent_default := {
+            aggregatedSingleTariffClassSession := PIC_aggregatedSingleTariffClassSession
+        } // End of template m_usageStatementContent_AggregatedSingleClassTariffSession
+        /**
+         * @desc    UsageStatementContent with listOfRawUsageDataContent requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         * @remark  Use PICS to initialize properly this template. These values are assigned according to [16410-1:2016], Table C.4: ContextData1
+         */
+        template (value) UsageStatementContent m_usageStatementContent_ListOfRawUsageDataContent
+        modifies m_usageStatementContent_default := {
+            listOfRawUsageData := PIC_listOfRawUsageData
+        } // End of template m_usageStatementContent_ListOfRawUsageDataContent
+
+        /**
+         * @desc    AggregatedSingleTariffClassSessionContent with timePeriodCovered requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.4 Data type AggregatedSingleTariffClassSessionContent
+         * @remark  Use PICS to initialize properly this template. These values are assigned according to [16410-1:2016], Table C.4: ContextData1
+         */
+        template (value) AggregatedSingleTariffClassSessionContent m_aggregatedSingleTariffClassSessionContent_timePeriodCovered_requested
+        modifies m_aggregatedSingleTariffClassSessionContent_default := {
+            timePeriodCovered := true
+        } // End of template m_aggregatedSingleTariffClassSessionContent_timePeriodCovered_requested
+        /**
+         * @desc    AggregatedSingleTariffClassSessionContent with currentTariffClass requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.4 Data type AggregatedSingleTariffClassSessionContent
+         */
+        template (value) AggregatedSingleTariffClassSessionContent m_aggregatedSingleTariffClassSessionContent_tariffClass_requested
+        modifies m_aggregatedSingleTariffClassSessionContent_default := {
+            currentTariffClass := true
+        } // End of template m_aggregatedSingleTariffClassSessionContent_tariffClass_requested
+        /**
+         * @desc    DetectedChargeObjectContent with currentTariffClass requested
+         * @see     [17575-3:2016], Clause 6.5.7 listOfChargeObjects and DetectedChargeObject
+         */
+        template (value) DetectedChargeObjectContent m_detectedChargeObjectContent_tariffClass_requested
+        modifies m_detectedChargeObjectContent_default := {
+            currentTariffClass := true
+            // TODO Add tariffClassDescriptionContent
+        } // End of template m_aggregatedSingleTariffClassSessionContent_tariffClass_requested
+        /**
+         * @desc    ListOfRawUsageDataContent with currentTariffClass requested
+         * @see     [17575-3:2016], Clause 6.5.7 listOfChargeObjects and DetectedChargeObject
+         */
+        template (value) ListOfRawUsageDataContent m_listOfRawUsageDataContent_tariffClass_requested
+        modifies m_listOfRawUsageDataContent_default := {
+            currentTariffClass := true
+            // TODO Add tariffClassDescriptionContent
+        } // End of template m_listOfRawUsageDataContent_tariffClass_requested
+    } // End of group Charging_Contents
+
+    /**
+     * @desc    Group of ChargeReportConfiguration describes in Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose - Annex C.2: Data structure - Table C.8
+     * @see     [17575-1:2016]: Charging for data element descriptions
+     */
+    group Charging_ChargeReportConfiguration {
+        /**
+         * @desc    ChargeReportConfiguration template with chargeReportCounter requested in ChargeReport messages
+         * @see     [17575-3:2016], Clause 8.3.5.2.1 Data type ChargeReportContent
+         */
+        template (value) ChargeReportConfiguration m_chargeReportConfiguration_chargeReportCounter_requested
+        modifies m_chargeReportConfiguration_default := {
+            chargeReportContent := m_chargeReportContent_chargeReportCounter_requested
+        } // End of template m_chargeReportConfiguration_chargeReportCounter_requested
+        /**
+         * @desc    ChargeReportConfiguration template with mileage requested in ChargeReport messages
+         * @see     [17575-3:2016], Clause 8.3.5.2.1 Data type ChargeReportContent
+         */
+        template (value) ChargeReportConfiguration m_chargeReportConfiguration_mileage_requested
+        modifies m_chargeReportConfiguration_default := {
+            chargeReportContent := m_chargeReportContent_mileage_requested
+        } // End of template m_chargeReportConfiguration_mileage_requested
+        /**
+         * @desc    ChargeReportConfiguration template with accountStatus, chargeReportCounter and mileage requested in ChargeReport messages
+         * @see     [17575-3:2016], Clause 8.3.5.2.1 Data type ChargeReportContent
+         */
+        template (value) ChargeReportConfiguration m_chargeReportConfiguration_accountStatus_chargeReportCounter_mileage_requested
+        modifies m_chargeReportConfiguration_default := {
+            chargeReportContent := m_chargeReportContent_accountStatus_chargeReportCounter_mileage_requested
+        } // End of template m_chargeReportConfiguration_accountStatus_chargeReportCounter_mileage_requested
+        /**
+         * @desc    UsageStatementContent with listOfChargeObjects requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         */
+        template (value) ChargeReportConfiguration m_chargeReportConfiguration_usageStatementContent_DetectedChargeObject
+        modifies m_chargeReportConfiguration_default := {
+            usageStatementContent := m_usageStatementContent_DetectedChargeObject_requested
+        } // End of template m_usageStatementContent_DetectedChargeObject_requested
+        /**
+         * @desc    UsageStatementContent with aggregatedFee requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         */
+        template (value) ChargeReportConfiguration m_chargeReportConfiguration_usageStatementContent_AggregatedFee
+        modifies m_chargeReportConfiguration_default := {
+            usageStatementContent := m_usageStatementContent_AggregatedFee
+        } // End of template m_usageStatementContent_AggregatedFee
+        /**
+         * @desc    UsageStatementContent with aggregatedSingleClassTariffSession requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         */
+        template (value) ChargeReportConfiguration m_chargeReportConfiguration_timePeriodCovered_AggregatedSingleClassTariffSession
+        modifies m_chargeReportConfiguration_default := {
+            usageStatementContent := m_usageStatementContent_AggregatedSingleClassTariffSession,
+            aggregatedSingleTariffClassSessionContent := m_aggregatedSingleTariffClassSessionContent_timePeriodCovered_requested
+        } // End of template m_usageStatementContent_AggregatedSingleClassTariffSession
+        /**
+         * @desc    UsageStatementContent with aggregatedSingleClassTariffSession requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         */
+        template (value) ChargeReportConfiguration m_chargeReportConfiguration_tariffClass_AggregatedSingleClassTariffSession
+        modifies m_chargeReportConfiguration_default := {
+            usageStatementContent := m_usageStatementContent_AggregatedSingleClassTariffSession,
+            aggregatedSingleTariffClassSessionContent := m_aggregatedSingleTariffClassSessionContent_tariffClass_requested
+        } // End of template m_chargeReportConfiguration_tariffClass_AggregatedSingleClassTariffSession
+        /**
+         * @desc    UsageStatementContent with detectedChargeObjectContent requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         */
+        template (value) ChargeReportConfiguration m_chargeReportConfiguration_DetectedChargeObjectContent_tariffClass
+        modifies m_chargeReportConfiguration_default := {
+            usageStatementContent := m_usageStatementContent_DetectedChargeObject_requested,
+            detectedChargeObjectContent := m_detectedChargeObjectContent_tariffClass_requested
+        } // End of template m_chargeReportConfiguration_DetectedChargeObjectContent_tariffClass
+        /**
+         * @desc    UsageStatementContent with listOfRawUsageDataContent requested
+         * @see     [17575-3:2016], Clause 8.3.5.2.2 Data type UsageStatementContent
+         */
+        template (value) ChargeReportConfiguration m_chargeReportConfiguration_ListOfRawUsageDataContent_tariffClass
+        modifies m_chargeReportConfiguration_default := {
+            usageStatementContent := m_usageStatementContent_ListOfRawUsageDataContent,
+            listOfRawUsageDataContent := m_listOfRawUsageDataContent_tariffClass_requested
+        } // End of template m_chargeReportConfiguration_ListOfRawUsageDataContent_tariffClass
+    } // End of Charging_ChargeReportConfiguration
+
+    /**
+     * @desc    Group of Context Date describes in Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose - Annex C.2: Data structure - Table C.8
+     * @see     [17575-1:2016]: Charging for data element descriptions
+     */
+    group Charging_ContextData {
+        /**
+         * @desc    ContextData template with chargeReportCounter requested in ChargeReport messages
+         */
+        template (value) Iso17575_3AduBody m_ContextData_default_chargeReportCounter_requested
+        modifies m_contextData_default := {
+            chargeReportConfiguration := m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_chargeReportCounter_requested })
+        } //End of template m_ContextData_chargeReportCounter_requested
+        /**
+         * @desc    ContextData template with mileage requested in ChargeReport messages
+         */
+        template (value) Iso17575_3AduBody m_ContextData_default_mileage_requested
+        modifies m_contextData_default := {
+            chargeReportConfiguration := m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_mileage_requested })
+        } //End of template m_ContextData_default_mileage_requested
+        /**
+         * @desc    ContextData template with UsageStatement.DetectedChargeObject requested in ChargeReport messages
+         */
+        template (value) Iso17575_3AduBody m_ContextData_usageStatementContent_DetectedChargeObject_requested
+        modifies m_contextData_default := {
+            chargeReportConfiguration := m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_mileage_requested })
+        } //End of template m_ContextData_usageStatementContent_DetectedChargeObject_requested
+        /**
+         * @desc    ContextData template with UsageStatement.aggregatedFee requested in ChargeReport messages
+         */
+        template (value) Iso17575_3AduBody m_ContextData_usageStatementContent_AggregatedFee_requested
+        modifies m_contextData_default := {
+            chargeReportConfiguration :=  m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_usageStatementContent_AggregatedFee })
+        } //End of template m_ContextData_usageStatementContent_AggregatedFee_requested
+        /**
+         * @desc    ContextData template with UsageStatement.aggregatedSingleClassTariffSession requested in ChargeReport messages + timePeriodCovered
+         */
+        template (value) Iso17575_3AduBody m_ContextData_timePeriodCovered_AggregatedSingleClassTariffSession_requested
+        modifies m_contextData_default := {
+            chargeReportConfiguration :=  m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_timePeriodCovered_AggregatedSingleClassTariffSession })
+        } //End of template m_ContextData_timePeriodCovered_AggregatedSingleClassTariffSession_requested
+        /**
+         * @desc    ContextData template with UsageStatement.aggregatedSingleClassTariffSession requested in ChargeReport messages + currentTariffClass
+         */
+        template (value) Iso17575_3AduBody m_ContextData_AggregatedSingleClassTariffSession_tariffClass_requested
+        modifies m_contextData_default := {
+            chargeReportConfiguration :=  m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_tariffClass_AggregatedSingleClassTariffSession })
+        } //End of template m_ContextData_AggregatedSingleClassTariffSession_tariffClass_requested
+        /**
+         * @desc    ContextData template with UsageStatement.detectedChargeObjectContent requested in ChargeReport messages + currentTariffClass
+         */
+        template (value) Iso17575_3AduBody m_ContextData_DetectedChargeObjectContent_tariffClass_requested
+        modifies m_contextData_default := {
+            chargeReportConfiguration :=  m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_DetectedChargeObjectContent_tariffClass })
+        } //End of template m_ContextData_DetectedChargeObjectContent_tariffClass_requested
+        /**
+         * @desc    ContextData template with UsageStatement.listOfRawUsageDataContent requested in ChargeReport messages + currentTariffClass
+         */
+        template (value) Iso17575_3AduBody m_ContextData_ListOfRawUsageDataContent_tariffClass_requested
+        modifies m_contextData_default := {
+            chargeReportConfiguration :=  m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_ListOfRawUsageDataContent_tariffClass })
+        } //End of template m_ContextData_ListOfRawUsageDataContent_tariffClass_requested
+        /**
+         * @desc    ContextData template with chargeReportCounter, mileage and accountStatus requested in ChargeReport messages
+         */
+        template (value) Iso17575_3AduBody m_ContextData_default_accountStatus_chargeReportCounter_mileage_requested
+        modifies m_contextData_default := {
+            chargeReportConfiguration :=  m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_accountStatus_chargeReportCounter_mileage_requested })
+        } //End of template m_ContextData_default_accountStatus_chargeReportCounter_mileage_requested
+    } // End of group Charging_ContextData
+
+    /**
+     * @desc    This group contains all template for ChargeReport message
+     * @see     [17575-1:2016]: Charging
+     */
+    group ChargeReport_Templates {
+        /**
+         * @desc    All TCs: Verify structure of sent ChargeReport,and allowed values of all data elements according to Table C.6: General Structure of Charge Report
+         * @see     [16410-1:2016], Clause C.1.1 General Structure of Charge Report
+         */
+        template ChargeReport mw_chargeReport_tableC1
+        modifies mw_chargeReport_default := {
+            timeOfReport := ?
+        } // End of template mw_chargeReport_tableC1
+        /**
+         * @desc    TC_CR_FE_BV_07: Verify that OBE ID is fixed
+         * @param   p_dist Mileage is about to roll-over, e.g. its value is close to this specified value
+         * @see     [16410-1:2016], Clause C.1.1 General Structure of Charge Report
+         */
+        template ChargeReport mw_chargeReport_mileageRollOver(in integer p_dist)
+        modifies mw_chargeReport_tableC1 := {
+            mileage := {
+                dist := p_dist
+            }
+        } // End of template mw_chargeReport_obeId
+        /**
+         * @desc    TC_CR_FE_BV_07: Verify that OBE ID is fixed
+         * @param p_obeId
+         * @see     [16410-1:2016], Clause C.1.1 General Structure of Charge Report
+         */
+        template ChargeReport mw_chargeReport_obeId(in ObeId p_obeId)
+        modifies mw_chargeReport_tableC1 := {
+            obeId := p_obeId
+        } // End of template mw_chargeReport_obeId
+        /**
+         * @desc    TC_CR_FE_BV_08: Verify that Vehicle License Plate Number is not used in Charge Report once it is used in lower level data elements
+         * @see     [16410-1:2016], Clause C.1.1 General Structure of Charge Report
+         */
+        template ChargeReport mw_chargeReport_no_vehicleLPNr
+        modifies mw_chargeReport_tableC1 := {
+            vehicleLPNr := omit
+        } // End of template mw_chargeReport_obeId
+        /**
+         * @desc    TC_BEF_FE_BV_06: Verify that DUT sets Account Status to ‘OK’ for credit based on-board accounts 
+         * @see     [16410-1:2016], Clause C.1.1 General Structure of Charge Report
+         */
+        template ChargeReport mw_chargeReport_tableC1_accountStatus_chargeReportCounter_mileage(in template AccountStatus p_accountStatus)
+        modifies mw_chargeReport_tableC1 := {
+            chargeReportCounter := ?,
+            mileage := ?,
+            accountStatus := p_accountStatus
+        } // End of template mw_chargeReport_tableC1_accountStatus_chargeReportCounter_mileage
+    } // End of group ChargeReport_Templates
+
+    /**
+     * @desc    This group contains all template for ChargeReportResponse message
+     * @see     [17575-1:2016]: Context data
+     */
+    group ChargeReportResponse_Templates {
+        /**
+         * @desc    This is the ChargeReportResponse message sent for following according TPs:
+         * @see     [17575-1:2016]: Context data
+         * @param   p_dateAndTime DataAndTime value to use for DataReceive.timeOfReport field
+         * @remark  All other ChargeReport template shall modify this one
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_timeOfReport(in GeneralizedTime p_timeOfReport) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_timeOfReport(p_timeOfReport)
+        } // End of template chargeReportResponse_timeOfReport
+        /**
+         * @desc    This is the ChargeReportResponse message sent for following according TPs:
+         * @see     [17575-1:2016]: Context data
+         * @param   p_distance Distance value to use for DataReceive.mileage field
+         * @remark  All other ChargeReport template shall modify this one
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_mileage(in Distance p_distance) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_mileage(p_distance)
+        } // End of template chargeReportResponse_mileage
+        /**
+         * @desc    This is the ChargeReportResponse message sent for following according TCs: All TCs in froup Charging
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @remark  All other ChargeReport template shall modify this one
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_transactionCounter(in integer p_chargeReportCounter) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter)
+        } // End of template chargeReportResponse_mileage
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that OBE Status For Driver is set properly having received Charge Report Response
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_obeStatusForDriver value of obeStatusForDriver field
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_obeStatusForDriver(in integer p_chargeReportCounter, in SetMMIRq p_obeStatusForDriver) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := p_obeStatusForDriver
+        } // End of template chargeReportResponse_mileage
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT sets Account Status properly for credit based on-board accounts
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_paymentFeeAmount value of newCreditLimit field
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_accountUpdate_newAccountLimit(in integer p_chargeReportCounter, in integer p_paymentFeeAmount) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                setAccount := {
+                    newCreditLimit := {
+                        paymentFeeAmount := p_paymentFeeAmount,
+                        paymentFeeUnit := PX_ACCOUNT_BASED_UNIT
+                    },
+                    newDistanceLimit := omit,
+                    newTimeLimit := omit,
+                    newDurationLimit := omit,
+                    newEventLimit := omit
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_accountUpdate_newAccountLimit
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT sets Account Status properly for distance based on-board accounts
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_distance value of Distance.dist field
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_accountUpdate_newDistanceLimit(in integer p_chargeReportCounter, in integer p_distance) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                setAccount := {
+                    newCreditLimit := omit,
+                    newDistanceLimit := {
+                        dist := p_distance,
+                        disUnit := PX_DISTANCE_BASED_UNIT
+                    },
+                    newTimeLimit := omit,
+                    newDurationLimit := omit,
+                    newEventLimit := omit
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_accountUpdate_newDistanceLimit
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT sets Account Status properly for time based on-board accounts
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_newTimeLimit value of newTimeLimit field
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_accountUpdate_newTimeLimit(
+                                                                                                                    in integer p_chargeReportCounter, 
+                                                                                                                    in GeneralizedTime p_newTimeLimit
+        ) modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                setAccount := {
+                    newCreditLimit := omit,
+                    newDistanceLimit := omit,
+                    newTimeLimit := p_newTimeLimit,
+                    newDurationLimit := omit,
+                    newEventLimit := omit
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_accountUpdate_newTimeLimit
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT sets Account Status properly for duration based on-board accounts
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_duration value of newDurationLimit.dur field
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_accountUpdate_newDurationLimit(
+                                                                                                                        in integer p_chargeReportCounter, 
+                                                                                                                        in EfcDsrcApplication.Int4 p_duration
+        ) modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                setAccount := {
+                    newCreditLimit := omit,
+                    newDistanceLimit := omit,
+                    newTimeLimit := omit,
+                    newDurationLimit := {
+                        dur := p_duration,
+                        durUnit := PX_DURATION_BASED_UNIT
+                    },
+                    newEventLimit := omit
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_accountUpdate_newDurationLimit
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT sets Account Status properly for event based on-board accounts
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_newEventLimit value of newEventLimit field
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_accountUpdate_newEventLimit(in integer p_chargeReportCounter, in integer p_newEventLimit) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                setAccount := {
+                    newCreditLimit := omit,
+                    newDistanceLimit := omit,
+                    newTimeLimit := omit,
+                    newDurationLimit := omit,
+                    newEventLimit := p_newEventLimit // Number of events till next report
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_accountUpdate_newEventLimit
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT update Account Status for credit based on-board accounts upon AddToAccount operation
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_addCredit value of added credit limit
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_addToAccount_addCredit(in integer p_chargeReportCounter, in integer p_addCredit) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                addToAccount := {
+                    addCredit := {
+                        paymentFeeAmount := p_addCredit,
+                        paymentFeeUnit := PX_ACCOUNT_BASED_UNIT
+                    },
+                    addDistance := omit,
+                    addTime := omit,
+                    addDuration := omit,
+                    addEvents := omit
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_addToAccount_addCredit
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT updates Account Status for distance based on-board accounts upon AddToAccount operation
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_distance value of added distance
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_addToAccount_addDistance(in integer p_chargeReportCounter, in integer p_distance) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                addToAccount := {
+                    addCredit := omit,
+                    addDistance := {
+                        dist := p_distance,
+                        disUnit := PX_DISTANCE_BASED_UNIT
+                    },
+                    addTime := omit,
+                    addDuration := omit,
+                    addEvents := omit
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_addToAccount_addDistance
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT updates Account Status for event based on-board accounts upon AddToAccount operation
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_addEventLimit value of added event
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_addToAccount_addEvents(in integer p_chargeReportCounter, in integer p_addEventLimit) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                addToAccount := {
+                    addCredit := omit,
+                    addDistance := omit,
+                    addTime := omit,
+                    addDuration := omit,
+                    addEvents := p_addEventLimit
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_addToAccount_addEvents
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT updates Account Status for credit based on-board accounts upon ReloadAccount operation
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_value set to ture to up the respective type of account with a predefined value (true) or not
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_reloadAccount_reloadOldCreditAmout(in integer p_chargeReportCounter, in boolean p_value) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                reloadAccount := {
+                    reloadOldCreditAmount := p_value,
+                    reloadOldDistanceLimit := omit,
+                    reloadOldTimeLimit := omit,
+                    reloadOldDurationLimit := omit,
+                    reloadOldEventLimit := omit
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_reloadAccount_reloadOldCreditAmout
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT updates Account Status for distance based on-board accounts upon ReloadAccount operation
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_value set to ture to up the respective type of account with a predefined value (true) or not
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_reloadAccount_reloadOldDistanceLimit(in integer p_chargeReportCounter, in boolean p_value) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                reloadAccount := {
+                    reloadOldCreditAmount := omit,
+                    reloadOldDistanceLimit := p_value,
+                    reloadOldTimeLimit := omit,
+                    reloadOldDurationLimit := omit,
+                    reloadOldEventLimit := omit
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_reloadAccount_reloadOldDistanceLimit
+        /**
+         * @desc    This is the ChargeReportResponse message sent to verify that DUT updates Account Status for event based on-board accounts upon ReloadAccount operation
+         * @see     [17575-1:2016]: Context data
+         * @param   p_chargeReportCounter value to use for DataReceive.chargeReportCounter field
+         * @param   p_value set to ture to up the respective type of account with a predefined value (true) or not
+         */
+        template (value) ChargeReportResponse m_chargeReportResponse_chargeReportCounter_reloadAccount_reloadOldEventLimit(in integer p_chargeReportCounter, in boolean p_value) 
+        modifies m_chargeReportResponse_default := {
+            chargeReportRespSender := {
+                countryCode := PX_ANY_EFC_OPERATOR,
+                providerIdentifier := PX_ANY_RECIPIENT
+            },
+            dataReceived := m_DataReceived_transactionCounter(p_chargeReportCounter),
+            obeStatusForDriver := omit,
+            accountUpdate := {
+                reloadAccount := {
+                    reloadOldCreditAmount := omit,
+                    reloadOldDistanceLimit := omit,
+                    reloadOldTimeLimit := omit,
+                    reloadOldDurationLimit := omit,
+                    reloadOldEventLimit := p_value
+                } // End of setAccount
+            } // End of accountUpdate
+        } // End of template m_chargeReportResponse_chargeReportCounter_reloadAccount_reloadOldDistanceLimit
+
+
+        /**
+         * @desc    This is the minimal form of awaited ChargeReportResponse message
+         * @see     [17575-1:2016]: Context data
+         * @remark  All other ChargeReport template shall modify this one
+         */
+        template ChargeReportResponse mw_chargeReportResponse_any := {
+            chargeReportRespSender := *,
+            dataReceived := *,
+            versionsResponse := *,
+            obeStatusForDriver := *,
+            accountUpdate := *
+        } // End of template mw_chargeReportResponse_any
+    } // End of group ChargeReportResponse_Templates
+
+    /**
+     * @desc    This group contains all template for DataReceived message
+     * @see     [17575-1:2016]: Charging - Clause 6.5.12
+     */
+    group DataReceived_Templates {
+        /**
+         * @desc    This template describes the DataReceived message with the choosen timeOfReport field
+         * @see     [17575-1:2016]: Charging - Clause 6.5.12
+         * @param   p_timeOfReport timeOfReport value
+         */
+        template (value) DataReceived m_DataReceived_timeOfReport(in GeneralizedTime p_timeOfReport) := {
+            timeOfReport := p_timeOfReport
+        } // End of template m_DataReceived_timeOfReport
+        /**
+         * @desc    This template describes the DataReceived message with the choosen mileage field
+         * @see     [17575-1:2016]: Charging - Clause 6.5.12
+         * @param   p_distance mileage value
+         */
+        template (value) DataReceived m_DataReceived_mileage(in Distance p_distance) := {
+            mileage := p_distance
+        } // End of template m_DataReceived_timeOfReport
+        /**
+         * @desc    This template describes the DataReceived message with the choosen chargeReportCounter field
+         * @see     [17575-1:2016]: Charging - Clause 6.5.12
+         * @param   p_chargeReportCounter chargeReportCounter value
+         */
+        template (value) DataReceived m_DataReceived_transactionCounter(in integer p_chargeReportCounter) := {
+            chargeReportCounter := p_chargeReportCounter
+        } // End of template m_DataReceived_timeOfReport
+    } // End of group DataReceived_Templates
+} with { encode "BER:1997" } // End of module Charging_Templates

@@ -1,0 +1,205 @@
+/**
+ * @author  FSCOM 
+ * @desc    This module describes the PICS proforma for the attributes
+ * @version $id$
+ */
+module Charging_PICS {
+    
+    /**
+     * @desc
+     * @see [17575-1:2016]: Test suite structure and test purpose - Annex B.3: Optinal data elements
+     */
+    group PICS_Charging_FrontEnd {
+        /**
+         * @desc	Does the EUT implement obeId field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_obeId := true;
+        /**
+         * @desc	Does the EUT implement vehicleLPNr field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_vehicleLPNr := true;
+        /**
+         * @desc	Does the EUT implement paymentMeans field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_paymentMeans := true;
+        /**
+         * @desc	Does the EUT implement serviceProviderContract field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_serviceProviderContract := true;
+        /**
+         * @desc	Does the EUT implement tollContext field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_tollContext := true;
+        /**
+         * @desc	Does the EUT implement timeOfReport field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_timeOfReport := true;
+        /**
+         * @desc	Does the EUT implement versionInfo field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_versionInfo := true;
+        /**
+         * @desc	Does the EUT implement usageStatementList field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_usageStatementList := true;
+        /**
+         * @desc	Does the EUT implement vatForThisSession field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_vatForThisSession := true;
+        /**
+         * @desc	Does the EUT implement accountStatus field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_accountStatus := true;
+        /**
+         * @desc	Does the EUT implement transactionCounter field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_chargeReportCounter := true;
+        /**
+         * @desc	Does the EUT implement mileage field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_mileage := true;
+        /**
+         * @desc	Does the EUT implement listOfCCCAttributes field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_listOfCCCAttributes := true;
+        /**
+         * @desc	Does the EUT implement authenticator field?
+         * @remark	PICS Reference: Annex B.3.1: ChargeReport
+         */
+        modulepar boolean PIC_authenticator := false;
+    } // End of group PICS_Charging_FrontEnd
+
+    /**
+     * @desc
+     * @see [17575-1:2016]: Test suite structure and test purpose - Annex B.3: Optinal data elements 
+     */
+    group PICS_ChargingReportResponse_FrontEnd {
+        /**
+         * @desc	Does the EUT implement chargeReportRespSender field?
+         * @remark	PICS Reference: Annex B.3.2: ChargeReportResponse
+         */
+        modulepar boolean PIC_reportRecipientId := true;
+        /**
+         * @desc	Does the EUT implement dataReceived field?
+         * @remark	PICS Reference: Annex B.3.2: ChargeReportResponse
+         */
+        modulepar boolean PIC_dataReceived := true;
+        /**
+         * @desc	Does the EUT implement versionsResponse field?
+         * @remark	PICS Reference: Annex B.3.2: ChargeReportResponse
+         */
+        modulepar boolean PIC_versionsResponse := true;
+        /**
+         * @desc	Does the EUT implement obeStatusForDriver field?
+         * @remark	PICS Reference: Annex B.3.2: ChargeReportResponse
+         */
+        modulepar boolean PIC_obeStatusForDriver := true;
+        /**
+         * @desc	Does the EUT implement accountUpdate field?
+         * @remark	PICS Reference: Annex B.3.2: ChargeReportResponse
+         */
+        modulepar boolean PIC_accountUpdate := true;
+        /**
+         * @desc	Does the EUT implement responseAuthenticator field?
+         * @remark	PICS Reference: Annex B.3.2: ChargeReportResponse
+         */
+        modulepar boolean PIC_responseAuthenticator := false;
+    } // End of group PICS_ChargingResponse_FrontEnd
+
+    /**
+     * @desc
+     * @see [17575-1:2016]: Test suite structure and test purpose - Annex B.3: Optinal data elements 
+     */
+    group PICS_UsageStatement_FrontEnd {
+        /**
+         * @desc    Does the EUT implement usageStatementID field?
+         * @remark  PICS Reference: Annex B.3.3: UsageStatement
+         */
+        modulepar boolean PIC_usageStatementID := true;
+        /**
+         * @desc    Does the EUT implement regimeID field?
+         * @remark  PICS Reference: Annex B.3.3: UsageStatement
+         */
+        modulepar boolean PIC_regimeID := true;
+        /**
+         * @desc    Does the EUT implement aggregatedFee field?
+         * @remark  PICS Reference: Annex B.3.3: UsageStatement
+         */
+        modulepar boolean PIC_aggregatedFee := true;
+        /**
+         * @desc    Does the EUT implement vat field?
+         * @remark  PICS Reference: Annex B.3.3: UsageStatement
+         */
+        modulepar boolean PIC_vat := true;
+        /**
+         * @desc    Does the EUT implement aggregatedSingleTariffClassSession field?
+         * @remark  PICS Reference: Annex B.3.3: UsageStatement
+         */
+        modulepar boolean PIC_aggregatedSingleTariffClassSession := true;
+        /**
+         * @desc    Does the EUT implement listOfDSRCUsageData field?
+         * @remark  PICS Reference: Annex B.3.3: UsageStatement
+         */
+        modulepar boolean PIC_listOfDSRCUsageData := true;
+        /**
+         * @desc    Does the EUT implement listOfRawUsageData field?
+         * @remark  PICS Reference: Annex B.3.3: UsageStatement
+         */
+        modulepar boolean PIC_listOfRawUsageData := true;
+        /**
+         * @desc    Does the EUT implement additionalUsageInformation field?
+         * @remark  PICS Reference: Annex B.3.3: UsageStatement
+         */
+        modulepar boolean PIC_additionalUsageInformation := true;
+        /**
+         * @desc    Does the EUT implement usageAuthenticator field?
+         * @remark  PICS Reference: Annex B.3.3: UsageStatement
+         */
+        modulepar boolean PIC_usageAuthenticator := true;
+    } // End of group PICS_UsageStatement_FrontEnd
+
+    /**
+     * @desc
+     * @see [17575-1:2016]: Test suite structure and test purpose - Annex B.3: Optinal data elements 
+     */
+    group PICS_AccountTypes_FrontEnd {
+        /**
+         * @desc    Does the EUT implement credit structure?
+         * @remark  PICS Reference: Annex B.3.4: Account types
+         */
+        modulepar boolean PIC_credit := true;
+        /**
+         * @desc    Does the EUT implement distance structure?
+         * @remark  PICS Reference: Annex B.3.4: Account types
+         */
+        modulepar boolean PIC_distance := true;
+        /**
+         * @desc    Does the EUT implement time structure?
+         * @remark  PICS Reference: Annex B.3.4: Account types
+         */
+        modulepar boolean PIC_time := true;
+        /**
+         * @desc    Does the EUT implement duration structure?
+         * @remark  PICS Reference: Annex B.3.4: Account types
+         */
+        modulepar boolean PIC_duration := true;
+        /**
+         * @desc    Does the EUT implement events structure?
+         * @remark  PICS Reference: Annex B.3.4: Account types
+         */
+        modulepar boolean PIC_events := true;
+    } // End of group PICS_AccountTypes_FrontEnd
+} // End of module Charging_PICS
