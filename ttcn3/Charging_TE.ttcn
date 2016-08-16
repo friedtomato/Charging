@@ -19,82 +19,82 @@ module Charging_TE {
          */
             /**
              * @desc    TC_CR_FE_BV_01: Verify the usage of communication services
-             * @remark  [TS 17575-1] (without any specification, let check for transactionCounter)
+             * @remark  [17575-1:2016] (without any specification, let check for transactionCounter)
              */
             execute(TC_CR_FE_BV_01(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_02: Verify that Time of Report is according to the local time
-             * @remark  [TS 17575-1], Clause 6.3.2 timeOfReport
+             * @remark  [17575-1:2016], Clause 6.3.2 timeOfReport
              */
             execute(TC_CR_FE_BV_02(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_03: Verify that Transaction Counter is incremented
-             * @remark  [TS 17575-1], Clause 6.3.5 6.3.5 transactionCounter
+             * @remark  [17575-1:2016], Clause 6.3.5 6.3.5 transactionCounter
              */
             execute(TC_CR_FE_BV_03(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_04: Transaction Counter Overflow
-             * @remark  [TS 17575-1], Clause 6.3.5 transactionCounter
+             * @remark  [17575-1:2016], Clause 6.3.5 transactionCounter
              */
             execute(TC_CR_FE_BV_04(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_05: Verify that mileage is not decreasing within one contract
-             * @remark  [TS 17575-1], Clause 6.3.6 mileage
+             * @remark  [17575-1:2016], Clause 6.3.6 mileage
              */
             execute(TC_CR_FE_BV_05(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_06: Verify that mileage rolls over
-             * @remark  [TS 17575-1], Clause 6.3.6 mileage
+             * @remark  [17575-1:2016], Clause 6.3.6 mileage
              */
             execute(TC_CR_FE_BV_06(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_07: Verify that OBE ID is fixed
-             * @remark  [TS 17575-1], Clause 6.4.1 obeId
+             * @remark  [17575-1:2016], Clause 6.4.1 obeId
              */
             execute(TC_CR_FE_BV_07(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_08: Verify that Vehicle License Plate Number is not used in Charge Report once it is used in lower level data elements
-             * @remark  [TS 17575-1], Clause 6.4.2 vehicleLPNr
+             * @remark  [17575-1:2016], Clause 6.4.2 vehicleLPNr
              */
             execute(TC_CR_FE_BV_08(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_09: Verify the uniqueness of Usage Statement ID
-             * @remark  [TS 17575-1], Clause 6.5.2  usageStatementID
+             * @remark  [17575-1:2016], Clause 6.5.2  usageStatementID
              */
             execute(TC_CR_FE_BV_09(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_10: Verify that begin period is lower than end period in Report Period
-             * @remark  [TS 17575-1], Clause 6.3.3  reportPeriod
+             * @remark  [17575-1:2016], Clause 6.3.3  reportPeriod
              */
             execute(TC_CR_FE_BV_10(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_11: Verify that begin period is lower than end period in Aggregated Fee
-             * @remark  [TS 17575-1], Clause 6.5.4 aggregatedFee
+             * @remark  [17575-1:2016], Clause 6.5.4 aggregatedFee
              */
             execute(TC_CR_FE_BV_11(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_12: Verify that begin period is lower than end period in Aggregated Single Tariff Class Session
-             * @remark  [TS 17575-1], Clause 6.5.5 aggregatedSingleTariffClassSession
+             * @remark  [17575-1:2016], Clause 6.5.5 aggregatedSingleTariffClassSession
              */
             execute(TC_CR_FE_BV_12(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_13: Verify that reported Tariff Class is defined in Context Data (Aggregated Single Class Tariff Session)
-             * @remark  [TS 17575-1], Clause 6.5.6 tariffClass
+             * @remark  [17575-1:2016], Clause 6.5.6 tariffClass
              */
             execute(TC_CR_FE_BV_13(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_14: Verify that reported Tariff Class is defined in Context Data (List of Charged Objects)
-             * @remark  [TS 17575-1], Clause 6.5.7  listOfChargeObjects and DetectedChargeObject
+             * @remark  [17575-1:2016], Clause 6.5.7  listOfChargeObjects and DetectedChargeObject
              */
             execute(TC_CR_FE_BV_14(), PX_GUARD);
             /**
              * @desc    TC_CR_FE_BV_15: Verify that reported Tariff Class is defined in Context Data (List of Raw Usage Data)
-             * @remark  [TS 17575-1], Clause 6.5.9 ListOfRawUsageData
+             * @remark  [17575-1:2016], Clause 6.5.9 ListOfRawUsageData
              */
             execute(TC_CR_FE_BV_15(), PX_GUARD);
 
     /**
-     * @desc    These Test Purposes apply to Back End feedback sent in Charge Report Response as claimed in [TS 17575-1] clause B.2.ChargeReportResponse, clause B.3.2, clause B.3.4
+     * @desc    These Test Purposes apply to Back End feedback sent in Charge Report Response as claimed in [17575-1:2016] clause B.2.ChargeReportResponse, clause B.3.2, clause B.3.4
      * Test subgroup objective:
      * - to test DUT behaviour with respect to OBE Status for Driver;
      * - to test the DUT behaviour with respect account update handling for the following types of on-board accounts:
@@ -107,176 +107,176 @@ module Charging_TE {
      */
             /**
              * @desc    TC_BEF_FE_BV_01: Verify that OBE Status For Driver is ‘OK’ having received Charge Report Response
-             * @remark  [TS 17575-1], Clause 6.4.7 obeStatusForDriver
+             * @remark  [17575-1:2016], Clause 6.4.7 obeStatusForDriver
              */
             execute(TC_BEF_FE_BV_01(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_02: Verify that OBE Status For Driver is ‘NOK’ having received Charge Report Response
-             * @remark  [TS 17575-1], Clause 6.4.7 obeStatusForDriver
+             * @remark  [17575-1:2016], Clause 6.4.7 obeStatusForDriver
              */
             execute(TC_BEF_FE_BV_02(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_03: Verify that OBE Status For Driver is ‘contactOperator’ having received Charge Report Response
-             * @remark  [TS 17575-1], Clause 6.4.7 obeStatusForDriver
+             * @remark  [17575-1:2016], Clause 6.4.7 obeStatusForDriver
              */
             execute(TC_BEF_FE_BV_03(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_04: Verify that OBE Status For Driver is ‘nokInLocalContext’ having received Charge Report Response
-             * @remark  [TS 17575-1], Clause 6.4.7 obeStatusForDriver
+             * @remark  [17575-1:2016], Clause 6.4.7 obeStatusForDriver
              */
             execute(TC_BEF_FE_BV_04(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_05: Verify that OBE Status For Driver is ‘noSignalling’ having received Charge Report Response
-             * @remark  [TS 17575-1], Clause 6.4.7 obeStatusForDriver
+             * @remark  [17575-1:2016], Clause 6.4.7 obeStatusForDriver
              */
             execute(TC_BEF_FE_BV_05(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_06: Verify that DUT sets Account Status to ‘OK’ for credit based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_06(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_07: Verify that DUT sets Account Status to ‘LOW’ for credit based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_07(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_08: Verify that DUT sets Account Status to ‘EMPTY’ for credit based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_08(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_09: Verify that DUT sets Account Status to ‘NEGATIVE’ for credit based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_09(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_10: Verify that DUT sets Account Status to ‘OK’ for distance based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_10(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_11: Verify that DUT sets Account Status to ‘LOW’ for distance based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_11(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_12: Verify that DUT sets Account Status to ‘EMPTY’ for distance based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_12(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_13: Verify that DUT sets Account Status to ‘NEGATIVE’ for distance based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_13(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_14: Verify that DUT sets Account Status to ‘OK’ for time based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_14(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_15: Verify that DUT sets Account Status to ‘LOW’ for time based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_15(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_16: Verify that DUT sets Account Status to ‘EMPTY’ for time based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_16(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_17: Verify that DUT sets Account Status to ‘NEGATIVE’ for time based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_17(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_18: Verify that DUT sets Account Status to ‘OK’ for duration based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_18(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_19: Verify that DUT sets Account Status to ‘LOW’ for duration based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_19(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_20: Verify that DUT sets Account Status to ‘EMPTY’ for duration based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_20(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_21: Verify that DUT sets Account Status to ‘NEGATIVE’ for duration based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_21(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_22: Verify that DUT sets Account Status to ‘OK’ for event based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_22(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_23: Verify that DUT sets Account Status to ‘LOW’ for event based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_23(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_24: Verify that DUT sets Account Status to ‘EMPTY’ for event based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_24(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_25: Verify that DUT sets Account Status to ‘NEGATIVE’ for event based on-board accounts
-             * @remark  [TS 17575-1], Clause 6.6.1 accountStatus
+             * @remark  [17575-1:2016], Clause 6.6.1 accountStatus
              */
             execute(TC_BEF_FE_BV_25(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_26: Verify that DUT update Account Status for credit based on-board accounts upon AddToAccount operation
-             * @remark  [TS 17575-1], Clause 6.6.2 accountUpdate
+             * @remark  [17575-1:2016], Clause 6.6.2 accountUpdate
              */
             execute(TC_BEF_FE_BV_26(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_27: Verify that DUT updates Account Status for distance based on-board accounts upon AddToAccount operation
-             * @remark  [TS 17575-1], Clause 6.6 Account
+             * @remark  [17575-1:2016], Clause 6.6 Account
              */
             execute(TC_BEF_FE_BV_27(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_28: Verify that DUT updates Account Status for event based on-board accounts upon AddToAccount operation
-             * @remark  [TS 17575-1], Clause 6.6 Account
+             * @remark  [17575-1:2016], Clause 6.6 Account
              */
             execute(TC_BEF_FE_BV_28(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_2: Verify that DUT updates Account Status for credit based on-board accounts upon ReloadAccount operation9
-             * @remark  [TS 17575-1], Clause 6.6.2 accountUpdate
+             * @remark  [17575-1:2016], Clause 6.6.2 accountUpdate
              */
             execute(TC_BEF_FE_BV_29(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_30: Verify that DUT updates Account Status for distance based on-board accounts upon ReloadAccount operation
-             * @remark  [TS 17575-1], Clause 6.6.2 accountUpdate
+             * @remark  [17575-1:2016], Clause 6.6.2 accountUpdate
              */
             execute(TC_BEF_FE_BV_30(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_31: Verify that DUT updates Account Status for event based on-board accounts upon ReloadAccount operation
-             * @remark  [TS 17575-1], Clause 6.6.2 accountUpdate
+             * @remark  [17575-1:2016], Clause 6.6.2 accountUpdate
              */
             execute(TC_BEF_FE_BV_31(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_32: Verify that DUT does not update Account Status for credit based on-board accounts upon ReloadAccount operation with ‘false’ value
-             * @remark  [TS 17575-1], Clause 6.6.2 accountUpdate
+             * @remark  [17575-1:2016], Clause 6.6.2 accountUpdate
              */
             execute(TC_BEF_FE_BV_32(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_33: Verify that DUT does not update Account Status for distance based on-board accounts upon ReloadAccount operation with ‘false’ value
-             * @remark  [TS 17575-1], Clause 6.6.2 accountUpdate
+             * @remark  [17575-1:2016], Clause 6.6.2 accountUpdate
              */
             execute(TC_BEF_FE_BV_33(), PX_GUARD);
             /**
              * @desc    TC_BEF_FE_BV_34: Verify that DUT does not update Account Status for event based on-board accounts upon ReloadAccount operation with ‘false’ value
-             * @remark  [TS 17575-1], Clause 6.6.2 accountUpdate
+             * @remark  [17575-1:2016], Clause 6.6.2 accountUpdate
              */
             execute(TC_BEF_FE_BV_34(), PX_GUARD);
     /**
-     * @desc    These Test Purposes apply to  Communication services support as claimed in [TS 17575-1] clause 1, and data elements in Charge Report Response as claimed in [TS 17575-1] clause B.2/ChargeReportResponse, amd clause B.3.2
+     * @desc    These Test Purposes apply to  Communication services support as claimed in [17575-1:2016] clause 1, and data elements in Charge Report Response as claimed in [17575-1:2016] clause B.2/ChargeReportResponse, amd clause B.3.2
      * Test subgroup objective:
      * - to test the usage of communication services;
      * - to test the behaviour of the DUT concerning confirmation of receipt of Charge Report;
@@ -285,12 +285,12 @@ module Charging_TE {
      */
             /**
              * @desc    TC_CRR_BE_BV_01: Verify the usage of communication services
-             * @remark  [TS 17575-1]
+             * @remark  [17575-1:2016]
              */
             execute(TC_CRR_BE_BV_01(), PX_GUARD);
             /**
              * @desc    TC_CRR_BE_BV_02: Verify that DUT confirms reception of Charge Report
-             * @remark  [TS 17575-1], Clause 5.3 Charge report response
+             * @remark  [17575-1:2016], Clause 5.3 Charge report response
              */
             execute(TC_CRR_BE_BV_02(), PX_GUARD);
 
