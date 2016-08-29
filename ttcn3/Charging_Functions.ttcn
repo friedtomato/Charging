@@ -31,6 +31,7 @@ module Charging_Functions {
     import from Common_LibUpperTester all;
     import from Charging_Pixits all;
     import from Common_Templates all;
+    import from Common_Pics all;
 
     // Charging
     import from Charging_TypesAndValues all;
@@ -50,6 +51,11 @@ module Charging_Functions {
         function f_Charging_Preambule() runs on EutComp {
             // Initialize communication stack
             f_InitializeCommunication();
+            
+            if (PICS_SECURED_MODE) {
+                fx_initialiseSecurity();
+            }
+            
             
             // Map TTCN-3 ports to TestAdapter ports
             map(self:pco, system:ta_pco);
@@ -94,6 +100,10 @@ module Charging_Functions {
             // Unmap TTCN-3 ports to TestAdapter ports
             unmap(self:pco, system:ta_pco);
             unmap(self:eaPort, system:ta_eaPort);
+            
+            if(PICS_SECURED_MODE) {
+              fx_uninitialiseSecurity();
+            }
             
             // De-nitialize communication stack
             f_DeInitializeCommunication();

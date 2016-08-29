@@ -365,6 +365,14 @@ module Charging_Templates {
          * @param   p_dateAndTime DataAndTime value to use for DataReceive.timeOfReport field
          * @remark  All other ChargeReport template shall modify this one
          */
+		
+        
+        /**
+         * @desc    This is the ChargeReportResponse message sent for following according TPs:
+         * @see     [17575-1:2016]: Context data
+         * @param   p_dateAndTime DataAndTime value to use for DataReceive.timeOfReport field
+         * @remark  All other ChargeReport template shall modify this one
+         */
         template (value) ChargeReportResponse m_chargeReportResponse_timeOfReport(in GeneralizedTime p_timeOfReport) 
         modifies m_chargeReportResponse_default := {
             chargeReportRespSender := {
@@ -720,6 +728,7 @@ module Charging_Templates {
      * @see     [17575-1:2016]: Charging - Clause 6.5.12
      */
     group DataReceived_Templates {
+       
         /**
          * @desc    This template describes the DataReceived message with the choosen timeOfReport field
          * @see     [17575-1:2016]: Charging - Clause 6.5.12

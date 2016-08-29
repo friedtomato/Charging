@@ -24,6 +24,7 @@ module Charging_TCs {
     import from Common_Functions all;
     import from Common_Pixits all;
     import from Common_Templates all;
+    import from Common_Pics all;
     
     // Charging
     import from Charging_Functions all;
@@ -44,11 +45,21 @@ module Charging_TCs {
         group Valid_Behaviour {
 
             /**
-             * @desc    TC_CR_FE_BV_01: Verify the usage of communication services
-             * @remark  [17575-1:2016] (without any specification, let check for chargeReportCounter)
+             * @desc    TC_CR_FE_BV_01: Protocol version handling
+             * @remark  [17575-1:2016] Verify that protocolVersion is iso17575-1-2016
              */
             testcase TC_CR_FE_BV_01() runs on EutComp system TestAdapter 
             {
+                // Local variables
+                var ChargeReport v_chargeReport := null; // variable used to store the received message
+                //Test control
+                if (PICS_SECURED_MODE) {
+                    log("*** " & testcasename() & ": not PICS_SECURED_MODE required for executing the TC ***");
+                    setverdict(inconc);
+                    stop;
+                }
+                
+                
                 // Preamble
                 f_Charging_Preambule();
                 // Front End shall already received Context Data
@@ -59,18 +70,19 @@ module Charging_TCs {
                 // Test body start
                 t_ac.start;
                 // Step1: Wait for ChargeReport message
+                
+                
                 alt {
-                    [] pco.receive(mw_chargeReport_any) { // No specific test was requiered
+                    [] pco.receive(mw_chargeReport_tableC1) -> value v_chargeReport{ // Step2: Verify that charge report according to the Table C.1
+                      // Step3: Protocol version check (shall equal to 1)
                         // Stop timer
                         t_ac.stop;
-                        // Step2: Check the Communication System [TS 17575-2
-                        f_userActions(cmdCheck, checkCommunicationSystem);
-                        
                         // Step3: Send ChargeReportResponse
-                        pco.send(m_chargeReportResponse_transactionCounter(PX_TRANSACTION_COUNTER_RESPONSE));
+                        pco.send(m_chargeReportResponse_transactionCounter(v_chargeReport.chargeReportCounter));
                         // Step4: Set verdict pass
                         setverdict(pass);
                     } // mw_chargeReport_any
+                    
                 } // End of alt statement
                 // Test body done
 
@@ -88,7 +100,7 @@ module Charging_TCs {
                 
                 // Preamble
                 f_Charging_Preambule();
-                // Front End received already Context Data with correctly set timeZone attribute
+                // Front End received already Context Data with correctly set timeZone attribute and requesting presence of timeOfReport
                 f_SendContextData(m_contextData_default); // See PX_TIMEZONE
                 // No authentication is required
                 // Preamble done
