@@ -97,7 +97,12 @@ module Charging_TCs {
             testcase TC_CR_FE_BV_02() runs on EutComp system TestAdapter 
             {
                 var ChargeReport v_chargeReport := null; // Variable used to store the received message
-                
+                  //Test control
+                if (PICS_SECURED_MODE) {
+                    log("*** " & testcasename() & ": not PICS_SECURED_MODE required for executing the TC ***");
+                    setverdict(inconc);
+                    stop;
+                }
                 // Preamble
                 f_Charging_Preambule();
                 // Front End received already Context Data with correctly set timeZone attribute and requesting presence of timeOfReport
